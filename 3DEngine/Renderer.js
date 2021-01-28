@@ -17,7 +17,7 @@ export class Renderer
         this.canvas = document.getElementById("game_canvas");
         if(this.canvas == null) throw new Error("The canvas is null");
 
-        this.gl = this.canvas.getContext("webgl2");
+        this.gl = this.canvas.getContext("webgl2", {antialias: false, alpha: true, depth: true, desynchronized: false});
         if(this.gl == null) throw new Error("The WebGL context is null");
 
         this.defaultShader = new Shader(this.gl, Shader.DEFAULT_VERTEX_SHADER, Shader.DEFAULT_FRAGMENT_SHADER);

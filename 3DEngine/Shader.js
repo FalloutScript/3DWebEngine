@@ -2,6 +2,8 @@ export class Shader
 {
 
     static DEFAULT_VERTEX_SHADER = `#version 300 es
+        precision mediump float;
+
         layout(location = 0) in vec3 vertexPosition;
         layout(location = 1) in vec4 vertexColor;
 
@@ -22,7 +24,7 @@ export class Shader
     `;
 
     static DEFAULT_FRAGMENT_SHADER = `#version 300 es
-        precision highp float;
+        precision mediump float;
 
         in vec4 outColor;
         out vec4 fragmentColor;

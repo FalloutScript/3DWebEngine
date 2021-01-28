@@ -40,7 +40,7 @@ export class Triangle extends Shape
 
     onDraw()
     {
-        this.test += 0.1;
+        this.test += 0.01;
         this.shader.sendMatrix4fData("projectionMatrix", Matrix4f.projectionMatrix(900, 600, 60, 0.1, 1000));
         this.shader.sendMatrix4fData("scaleMatrix", Matrix4f.scaleMatrix(0.2, 0.2, 0.2));
         this.shader.sendMatrix4fData("rotationZMatrix", Matrix4f.rotationZMatrix(this.test));
