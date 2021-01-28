@@ -8,13 +8,16 @@ export class Shader
         out vec4 outColor;
 
         uniform mat4 projectionMatrix;
+
+        uniform mat4 rotationZMatrix;
         uniform mat4 scaleMatrix;
+        
 
         void main()
         {
             outColor = vertexColor;
 
-            gl_Position = projectionMatrix * scaleMatrix * vec4(vertexPosition, 1);
+            gl_Position = projectionMatrix * scaleMatrix * rotationZMatrix * vec4(vertexPosition, 1);
         }
     `;
 
@@ -49,10 +52,10 @@ export class Shader
     {
         if(this.loaded == true) throw new Error("The shader is already loaded");
 
-        this.createShader();
-        this.parseShader();
-        this.compileShader();
-        this.linkShader();
+        this.create();
+        this.parse();
+        this.compile();
+        this.link();
         this.loaded = true;
     }
 
@@ -66,26 +69,26 @@ export class Shader
         this.loaded = false;
     }
 
-    bindShader()
+    bind()
     {
         if(this.programShader == 0)  throw new Error("The program shader is not created");
         this.gl.useProgram(this.programShader);
     }
 
-    unbindShader()
+    unbind()
     {
         if(this.programShader == 0)  throw new Error("The program shader is not created");
         this.gl.useProgram(null);
     }
 
-    createShader()
+    create()
     {
         this.programShader = this.gl.createProgram();
         this.vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER);
         this.fragmentShader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
     }
 
-    parseShader()
+    parse()
     {
         if(this.vertexShader == 0) throw new Error("The vertex shader is not created");
         if(this.fragmentShader == 0) throw new Error("The fragment shader is not created");
@@ -93,7 +96,7 @@ export class Shader
         this.gl.shaderSource(this.fragmentShader, this.fragmentSource);
     }
 
-    compileShader()
+    compile()
     {
         if(this.vertexShader == 0) throw new Error("The vertex shader is not created");
         if(this.fragmentShader == 0) throw new Error("The fragment shader is not created");
@@ -107,7 +110,7 @@ export class Shader
         if(fragmentError != "") console.log(fragmentError);
     }
 
-    linkShader()
+    link()
     {
         if(this.vertexShader == 0) throw new Error("The vertex shader is not created");
         if(this.fragmentShader == 0) throw new Error("The fragment shader is not created");

@@ -1,8 +1,8 @@
 .mtx-body
 {
     background-color: rgb(25, 25, 25);
-    padding: 0px 0px 0px 0px;
-    margin: 0px 0px 0px 0px;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .mtx-nav
@@ -57,7 +57,8 @@
     margin: 0px 0px 0px 0px;
     border-radius: 5px;
     background-color: rgb(0, 0, 0);
-    display: block;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .mtx-nav-list
@@ -65,6 +66,8 @@
     padding: 3px 3px 3px 3px;
     margin: 2px 2px 2px 2px;
     display: inline-block;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .mtx-code
@@ -77,6 +80,8 @@
     color: white;
     white-space: pre;
     display: block;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .mtx-img
@@ -87,6 +92,8 @@
     height: 100px;
     border-radius: 5px;
     background-color: rgb(25, 25, 25);
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .mtx-h1

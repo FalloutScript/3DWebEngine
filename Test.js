@@ -1,7 +1,6 @@
 import { Engine } from "./3DEngine/Engine.js";
 import { Triangle } from "./3DEngine/Triangle.js";
-
-import { Matrix4f } from "./3DEngine/Matrix4f.js";
+import { Color } from "./3DEngine/Color.js";
 
 class TestEngine extends Engine
 {
@@ -10,12 +9,12 @@ class TestEngine extends Engine
     {
         super();
         this.test = new Triangle();
-        console.log(document.documentElement.clientWidth);
     }
 
     onLoad()
     {
         this.test.load();
+        this.test.setColor(Color.YELLOW);
     }
 
     onUpdate()

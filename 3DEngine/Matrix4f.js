@@ -5,10 +5,15 @@ export class Matrix4f
 
     constructor()
     {
-        this.data = [1, 0, 0, 0,
-                     0, 1, 0, 0,
-                     0, 0, 1, 0,
-                     0, 0, 0, 1];
+        for(var i = 0; i < 4 * 4; i++)
+        {
+            this.data.push(0);
+        }
+
+        this.data[0] = 1; this.data[4] = 0; this.data[8] = 0; this.data[12] = 0;
+        this.data[1] = 0; this.data[5] = 1; this.data[9] = 0; this.data[13] = 0;
+        this.data[2] = 0; this.data[6] = 0; this.data[10] = 1; this.data[14] = 0;
+        this.data[3] = 0; this.data[7] = 0; this.data[11] = 0; this.data[15] = 1;
     }
 
     static projectionMatrix(width, height, fov, nearZ, farZ)
@@ -22,6 +27,19 @@ export class Matrix4f
         matrix.data[10] = ((-nearZ - farZ) / (nearZ - farZ));
         matrix.data[14] = ((2 * farZ * nearZ) / (nearZ - farZ));
         matrix.data[11] = 1;
+
+        return matrix;
+    }
+
+    static rotationZMatrix(angle)
+    {
+        var matrix = new Matrix4f();
+        var rad = this.degreesToRadians(angle);
+
+        matrix.data[0] = Math.cos(angle);
+        matrix.data[4] = Math.sin(angle);
+        matrix.data[1] = -Math.sin(angle);
+        matrix.data[5] = Math.cos(angle);
 
         return matrix;
     }
