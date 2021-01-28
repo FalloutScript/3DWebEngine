@@ -1,8 +1,8 @@
 .mtx-body
 {
     background-color: rgb(25, 25, 25);
-    padding: 3px 3px 3px 3px;
-    margin: 2px 2px 2px 2px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 .mtx-nav
@@ -53,8 +53,8 @@
 
 .mtx-canvas
 {
-    padding: 3px 3px 3px 3px;
-    margin: 2px 2px 2px 2px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
     border-radius: 5px;
     background-color: rgb(0, 0, 0);
     display: block;

@@ -10,6 +10,7 @@ class TestEngine extends Engine
     {
         super();
         this.test = new Triangle();
+        console.log(document.documentElement.clientWidth);
     }
 
     onLoad()
