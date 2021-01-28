@@ -9,6 +9,8 @@ export class Renderer
     glslVersion = "";
     vendor = "";
     loaded = false;
+    width = 0;
+    height = 0;
 
     constructor()
     {
@@ -44,8 +46,12 @@ export class Renderer
 
     update()
     {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        console.log(this.width);
+        console.log(this.height);
         this.gl.viewport(0, 0, this.width, this.height);
     }
 
