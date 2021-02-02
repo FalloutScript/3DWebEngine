@@ -28,13 +28,14 @@ export class VertexBuffer
         this.vbo = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.data), this.gl.STATIC_DRAW);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
+        this.loaded = true;
     }
 
     unload()
     {
         if(this.loaded == false) throw new Error("The vertex buffer is already unloaded");
         this.gl.deleteBuffer(this.vbo);
+        this.loaded = false;
     }
 
     draw()
@@ -59,32 +60,42 @@ export class VertexBuffer
         this.count += 3;
     }
 
-    appendColor(color)
+    appendTextureCoordinate(x, y)
     {
         if(this.count == this.size) throw new RangeError("Can't add more data to the shape");
 
-        this.data.push(color.getRed());
-        this.data.push(color.getGreen());
-        this.data.push(color.getBlue());
-        this.data.push(color.getAlpha());
-        this.count += 4;
+        this.data.push(x);
+        this.data.push(y);
+        this.count += 2;
     }
 
-    updateColor(color)
+    appendTextureQuadCoordinate(count)
     {
-        if(color == null) throw new Error("Can't set null color");
-
-        var data = [];
-
-        for(var i = 0; i < this.points; i++)
+        if(this.count == this.size) throw new RangeError("Can't add more data to the shape");
+        for(var i = 0; i < count; i++)
         {
-            data.push(color.getRed());
-            data.push(color.getGreen());
-            data.push(color.getBlue());
-            data.push(color.getAlpha ());
+            this.data.push(0); this.data.push(0);
+            this.data.push(0); this.data.push(1);
+            this.data.push(1); this.data.push(0);
+            this.data.push(0); this.data.push(1); 
+            this.data.push(1); this.data.push(0);
+            this.data.push(1); this.data.push(1);
+            this.count += 12;
         }
+    }
 
-        this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 3 * 4 * 3, new Float32Array(data), 0, 0);
+    appendColor(color, count)
+    {
+        if(this.count == this.size) throw new RangeError("Can't add more data to the shape");
+
+        for(var i = 0; i < count; i++)
+        {
+            this.data.push(color.getRed());
+            this.data.push(color.getGreen());
+            this.data.push(color.getBlue());
+            this.data.push(color.getAlpha());
+            this.count += 4;
+        }
     }
 
     bind()
@@ -97,5 +108,10 @@ export class VertexBuffer
     {
         if(this.vbo == 0) throw new Error("The vertex object is not created");
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
+    }
+
+    isLoaded()
+    {
+        return this.loaded;
     }
 }

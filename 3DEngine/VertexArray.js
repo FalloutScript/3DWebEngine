@@ -23,8 +23,7 @@ export class VertexArray
     unload()
     {
         if(this.loaded == false) throw new Error("The vertex array is already unloaded");
-
-        this.vertexBuffer.unload();
+        
         this.gl.deleteVertexArray(this.vao);
         this.loaded = false;
     }
@@ -39,6 +38,11 @@ export class VertexArray
     {
         if(this.vao == 0) throw new Error("The vertex array is not created");
         this.gl.bindVertexArray(null);
+    }
+
+    isLoaded()
+    {
+        return this.loaded;
     }
 
 }

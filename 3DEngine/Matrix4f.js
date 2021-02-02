@@ -20,13 +20,40 @@ export class Matrix4f
     {
         var matrix = new Matrix4f();
         var aspectRatio = width / height;
-        var radiansFov = this.degreesToRadians(fov / 2);
+        var radiansFov = this.degreesToRadians(fov);
 
-        matrix.data[0] = 1 / (Math.tan(radiansFov) * aspectRatio);
-        matrix.data[5] = 1 / Math.tan(radiansFov);
+        matrix.data[0] = 1 / (Math.tan(radiansFov / 2) * aspectRatio);
+        matrix.data[5] = 1 / Math.tan(radiansFov / 2);
         matrix.data[10] = ((-nearZ - farZ) / (nearZ - farZ));
         matrix.data[14] = ((2 * farZ * nearZ) / (nearZ - farZ));
         matrix.data[11] = 1;
+        matrix.data[15] = 0;
+
+        return matrix;
+    }
+
+    static rotationXMatrix(angle)
+    {
+        var matrix = new Matrix4f();
+        var rad = this.degreesToRadians(angle);
+
+        matrix.data[5] = Math.cos(rad);
+        matrix.data[9] = Math.sin(rad);
+        matrix.data[6] = -Math.sin(rad);
+        matrix.data[10] = Math.cos(rad);
+
+        return matrix;
+    }
+
+    static rotationYMatrix(angle)
+    {
+        var matrix = new Matrix4f();
+        var rad = this.degreesToRadians(angle);
+
+        matrix.data[0] = Math.cos(rad);
+        matrix.data[8] = Math.sin(rad);
+        matrix.data[2] = -Math.sin(rad);
+        matrix.data[10] = Math.cos(rad);
 
         return matrix;
     }
@@ -36,29 +63,38 @@ export class Matrix4f
         var matrix = new Matrix4f();
         var rad = this.degreesToRadians(angle);
 
-        matrix.data[0] = Math.cos(angle);
-        matrix.data[4] = Math.sin(angle);
-        matrix.data[1] = -Math.sin(angle);
-        matrix.data[5] = Math.cos(angle);
+        matrix.data[0] = Math.cos(rad);
+        matrix.data[4] = Math.sin(rad);
+        matrix.data[1] = -Math.sin(rad);
+        matrix.data[5] = Math.cos(rad);
 
         return matrix;
     }
 
-    static translationMatrix(x, y, z)
+    static translationMatrix(translation)
     {
         var matrix = new Matrix4f();
-        matrix.data[12] = x;
-        matrix.data[13] = y;
-        matrix.data[14] = z;
+        matrix.data[12] = translation.getX();
+        matrix.data[13] = translation.getY();
+        matrix.data[14] = translation.getZ();
         return matrix;
     }
 
-    static scaleMatrix(x, y, z)
+    static viewTranslationMatrix(translation)
     {
         var matrix = new Matrix4f();
-        matrix.data[0] = x;
-        matrix.data[5] = y;
-        matrix.data[10] = z;
+        matrix.data[12] = -translation.getX();
+        matrix.data[13] = -translation.getY();
+        matrix.data[14] = -translation.getZ();
+        return matrix;
+    }
+
+    static scaleMatrix(scale)
+    {
+        var matrix = new Matrix4f();
+        matrix.data[0] = scale.getX();
+        matrix.data[5] = scale.getY();
+        matrix.data[10] = scale.getZ();
         return matrix;
     }
 

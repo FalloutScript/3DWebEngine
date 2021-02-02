@@ -6,6 +6,7 @@ export class Engine
     static INSTANCE = null;
 
     renderer = null;
+    level = null;
     loaded = false;
     date = null;
 
@@ -14,11 +15,13 @@ export class Engine
     framesTimer = 0;
     maxFramesPerSecond = 0;
 
-    constructor()
+    constructor(level)
     {
         if(this.constructor == Engine) throw new Error("Can't instantiate abstract class !");
         if(Engine.INSTANCE != null) throw new Error("Can't recreate an engine (Singleton)");
+        if(level == null) throw new Error("Can't set null level");
 
+        this.level = level;
         this.renderer = new Renderer();
         Engine.INSTANCE = this;
     }
@@ -28,9 +31,9 @@ export class Engine
         return Engine.INSTANCE;
     }
 
-    onLoad(){throw new Error("Abstract method")}
-    onUpdate(){throw new Error("Abstract method")}
-    onUnload(){throw new Error("Abstract method")}
+    onLoad() { throw new Error("Abstract method") }
+    onUpdate() { throw new Error("Abstract method") }
+    onUnload() { throw new Error("Abstract method") }
 
     load()
     {
@@ -39,10 +42,11 @@ export class Engine
         this.onLoad();
         this.renderer.load();
         this.renderer.clear();
+        this.level.load();
         this.loaded = true;
     }
 
-    update()
+    run()
     {
         var engine = this;
         this.frames = 0;
@@ -52,9 +56,11 @@ export class Engine
 
         var loop = window.setInterval(function() 
         {
-            engine.renderer.clear();
-            engine.renderer.update();
             engine.onUpdate();
+            engine.renderer.clear();
+            engine.level.update();
+            engine.level.draw();
+            engine.renderer.update();
             engine.frames++;
 
             if(window.closed) 
@@ -80,8 +86,16 @@ export class Engine
         if(this.loaded == false) throw "Engine is already unloaded !";
 
         this.onUnload();
+        this.level.unload();
         this.renderer.unload();
         this.loaded = false;
+    }
+
+    loadLevel(level)
+    {
+        if(this.level != null) this.level.unload();
+        this.level = level;
+        this.level.load();
     }
 
     isLoaded()
@@ -89,9 +103,19 @@ export class Engine
         return this.loaded;
     }
 
+    getMaxFramesPerSecond()
+    {
+        return this.maxFramesPerSecond;
+    }
+
     getRenderer()
     {
         return this.renderer;
+    }
+
+    getLevel()
+    {
+        return this.level;
     }
     
 }

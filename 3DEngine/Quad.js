@@ -3,42 +3,64 @@ import { Matrix4f } from "./Matrix4f.js";
 import { Vector3f } from "./Vector3f.js";
 import { Engine } from "./Engine.js";
 
-export class Triangle extends Shape
+export class Quad extends Shape
 {
 
     constructor(name)
     {
-        super(name, 3, 3 * 3 + 3 * 4);
+        super(name, 6, 4 * 3 + 4 * 4 + 4 * 2);
     }
 
     onLoad()
     {
-        var first = new Vector3f(0, 1, 0);
-        var second = new Vector3f(-1, -1, 0);
-        var third = new Vector3f(1, -1, 0);
+        var topLeft = new Vector3f(-1, 1, 0);
+        var topRight = new Vector3f(1, 1, 0);
+        var downLeft = new Vector3f(-1, -1, 0);
+        var downRight = new Vector3f(1, -1, 0);
 
-        //Triangle
-        this.vertexBuffer.appendCoordinate(first);
-        this.vertexBuffer.appendCoordinate(second);
-        this.vertexBuffer.appendCoordinate(third);
-        
+        //Quad
+        this.vertexBuffer.appendCoordinate(topLeft);
+        this.vertexBuffer.appendCoordinate(topRight);
+        this.vertexBuffer.appendCoordinate(downLeft);
+        this.vertexBuffer.appendCoordinate(downRight);
+
         //Color
-        this.vertexBuffer.appendColor(this.color, 3);
+        this.vertexBuffer.appendColor(this.color, 4);
+
+        //Texture coords
+        this.vertexBuffer.appendTextureCoordinate(0, 0);
+        this.vertexBuffer.appendTextureCoordinate(1, 0);
+        this.vertexBuffer.appendTextureCoordinate(0, 1);
+        this.vertexBuffer.appendTextureCoordinate(1, 1);
+
+        this.elementBuffer.appendIndex(0);
+        this.elementBuffer.appendIndex(1);
+        this.elementBuffer.appendIndex(2);
+        this.elementBuffer.appendIndex(1);
+        this.elementBuffer.appendIndex(2);
+        this.elementBuffer.appendIndex(3);
 
         this.vertexArray.load();
         this.vertexBuffer.load();
+        this.elementBuffer.load();
         
         this.vertexArray.bind();
+        this.elementBuffer.bind();
         this.vertexBuffer.bind();
         this.vertexBuffer.configure(0, 3, 0);
-        this.vertexBuffer.configure(1, 4, 3 * 3 * 4);
-        this.vertexArray.unbind();
+        this.vertexBuffer.configure(1, 4, 4 * 3 * 4);
+        this.vertexBuffer.configure(2, 2, 4 * 3 * 4 + 4 * 4 * 4);
     }
-    
+
+    onUpdateTexture()
+    {
+
+    }
+
     onUpdateColor()
     {
         var data = [];
-        for(var i = 0; i < 3; i++)
+        for(var i = 0; i < 4; i++)
         {
             data.push(this.color.getRed());
             data.push(this.color.getGreen());
@@ -47,15 +69,15 @@ export class Triangle extends Shape
         }
         this.vertexArray.bind();
         this.vertexBuffer.bind();
-        this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 3 * 4 * 3, new Float32Array(data), 0, 0);
-        this.vertexArray.unbind();
+        this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 4 * 3 * 4, new Float32Array(data), 0, 0);
     }
 
     onDraw()
     {
         var renderer = Engine.getInstance().getRenderer();
         var level = Engine.getInstance().getLevel();
-        
+
+        if(this.texture != null) this.texture.bind();
         this.shader.bind();
         this.vertexArray.bind();
         this.shader.sendMatrix4fData("projectionMatrix", Matrix4f.projectionMatrix(renderer.getWidth(), renderer.getHeight(), 60, 0.1, 1000));
@@ -69,12 +91,13 @@ export class Triangle extends Shape
         this.shader.sendMatrix4fData("rotationYMatrix", Matrix4f.rotationYMatrix(this.rotation.getY()));
         this.shader.sendMatrix4fData("rotationZMatrix", Matrix4f.rotationZMatrix(this.rotation.getZ()));
         this.shader.sendBoolData("hasColor", true);
-        this.shader.sendBoolData("hasTexture", false);
-        this.vertexBuffer.draw();
+        this.shader.sendBoolData("hasTexture", true);
+        this.elementBuffer.draw();
     }
 
     onUnload()
     {
+        this.elementBuffer.unload();
         this.vertexBuffer.unload();
         this.vertexArray.unload();
     }

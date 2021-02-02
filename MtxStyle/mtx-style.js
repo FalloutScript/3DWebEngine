@@ -17,6 +17,3 @@ codeArray.forEach(code => {
 	formatColor(code, "return", "rgb(200, 100, 100)");
 	formatColor(code, "namespace", "rgb(200, 100, 100)");
 });
-
-
-//HTML Navbar

@@ -23,9 +23,9 @@
     margin: 2px 2px 2px 2px;
     font-size: 24px;
     border-radius: 5px;
-    background-color: rgb(25, 25, 25);
     color: lightgray;
     vertical-align: middle;
+    background-color: rgb(25, 25, 25);
 }
 
 .mtx-nav-img
@@ -56,9 +56,10 @@
     padding: 0px 0px 0px 0px;
     margin: 0px 0px 0px 0px;
     border-radius: 5px;
-    background-color: rgb(0, 0, 0);
     max-height: 100%;
     max-width: 100%;
+    background-color: rgb(0, 0, 0);
+    cursor: none;
 }
 
 .mtx-nav-list
