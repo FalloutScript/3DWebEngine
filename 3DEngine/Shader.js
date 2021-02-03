@@ -61,7 +61,13 @@ export class Shader
         void main()
         {
             if(hasColor == 1) fragmentColor = color;
-            if(hasTexture == 1) fragmentColor = color * texture(sampler, textureCoords);
+            if(hasTexture == 1) 
+            {
+                vec4 textureColor = texture(sampler, textureCoords);
+                if(textureColor.a < 0.2) discard;
+                fragmentColor = color * textureColor;
+            }
+            
         }
     `;
 

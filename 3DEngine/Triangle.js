@@ -80,7 +80,9 @@ export class Triangle extends Shape
 
         this.shader.sendBoolData("hasColor", true);
         this.shader.sendBoolData("hasTexture", false);
+
         this.vertexBuffer.draw();
+        if(this.texture != null) this.texture.unbind();
     }
 
     onUnload()

@@ -11,7 +11,6 @@ export class Model extends Shape
     {
         super(name, 1, 1);
         this.mesh = new Mesh(document.getElementById(model).textContent);
-        console.log(this);
     }
 
     onLoad()
@@ -37,6 +36,7 @@ export class Model extends Shape
         this.vertexBuffer.configure(0, 3, 0);
         this.vertexBuffer.configure(1, 4, this.vertexBuffer.points * 3 * 4);
         this.vertexBuffer.configure(2, 2, this.vertexBuffer.points * 3 * 4 + this.vertexBuffer.points * 4 * 4);
+        this.vertexArray.unbind();
     }
 
     onUpdateTexture()
@@ -89,7 +89,9 @@ export class Model extends Shape
 
         this.shader.sendBoolData("hasColor", true);
         this.shader.sendBoolData("hasTexture", false);
+        
         this.elementBuffer.draw();
+        if(this.texture != null) this.texture.unbind();
     }
 
     onUnload()

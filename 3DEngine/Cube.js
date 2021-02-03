@@ -90,6 +90,7 @@ export class Cube extends Shape
         this.vertexBuffer.configure(0, 3, 0);
         this.vertexBuffer.configure(1, 4, 36 * 3 * 4);
         this.vertexBuffer.configure(2, 2, 36 * 3 * 4 + 36 * 4 * 4);
+        this.vertexArray.unbind();
     }
 
     onUpdateColor()
@@ -145,6 +146,7 @@ export class Cube extends Shape
         this.shader.sendBoolData("hasTexture", true);
 
         this.vertexBuffer.draw();
+        if(this.texture != null) this.texture.unbind();
     }
 
     onUnload()

@@ -50,6 +50,7 @@ export class Quad extends Shape
         this.vertexBuffer.configure(0, 3, 0);
         this.vertexBuffer.configure(1, 4, 4 * 3 * 4);
         this.vertexBuffer.configure(2, 2, 4 * 3 * 4 + 4 * 4 * 4);
+        this.vertexArray.unbind();
     }
 
     onUpdateTexture()
@@ -100,10 +101,11 @@ export class Quad extends Shape
             this.shader.sendMatrix4fData("viewRotationZMatrix", Matrix4f.identity());
         }
 
-
         this.shader.sendBoolData("hasColor", true);
         this.shader.sendBoolData("hasTexture", true);
+        
         this.elementBuffer.draw();
+        if(this.texture != null) this.texture.unbind();
     }
 
     onUnload()

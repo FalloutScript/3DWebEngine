@@ -18,6 +18,8 @@ class TestLevel extends Level
     {
         var tex = new Texture("risitas", "./risitas.jpg");
         var sky = new Texture("sky", "./sky.jpg");
+        var cursor = new Texture("cursor", "./cursor.png");
+        this.addTexture(cursor);
         this.addTexture(tex);
         this.addTexture(sky);
 
@@ -32,6 +34,16 @@ class TestLevel extends Level
         test4.setColor(Color.GRAY);
         test4.setFollowingCamera(true);
         this.addShape(test4);
+
+        var test5 = new Quad("test5");
+        test5.setTexture(this.getTexture("cursor"));
+        test5.setColor(Color.WHITE);
+        test5.getScale().setX(0.03);
+        test5.getScale().setY(0.03);
+        test5.getScale().setZ(0.03);
+        test5.getPosition().setZ(1);
+        test5.setFollowingCamera(true);
+        this.addShape(test5);
 
         var test3 = new Cube("pipi3");
         test3.setTexture(this.getTexture("sky"));
