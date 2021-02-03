@@ -16,6 +16,12 @@ export class Matrix4f
         this.data[3] = 0; this.data[7] = 0; this.data[11] = 0; this.data[15] = 1;
     }
 
+    static identity()
+    {
+        var matrix = new Matrix4f();
+        return matrix;
+    }
+
     static projectionMatrix(width, height, fov, nearZ, farZ)
     {
         var matrix = new Matrix4f();

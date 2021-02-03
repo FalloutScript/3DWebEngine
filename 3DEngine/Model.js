@@ -1,44 +1,31 @@
 import { Shape } from "./Shape.js";
 import { Matrix4f } from "./Matrix4f.js";
-import { Vector3f } from "./Vector3f.js";
 import { Engine } from "./Engine.js";
 
-export class Quad extends Shape
+export class Model extends Shape
 {
 
-    constructor(name)
+    mesh = null;
+
+    constructor(name, model)
     {
-        super(name, 6, 4 * 3 + 4 * 4 + 4 * 2);
+        super(name, 1, 1);
+        this.mesh = new Mesh(document.getElementById(model).textContent);
+        console.log(this);
     }
 
     onLoad()
     {
-        var topLeft = new Vector3f(-1, 1, 0);
-        var topRight = new Vector3f(1, 1, 0);
-        var downLeft = new Vector3f(-1, -1, 0);
-        var downRight = new Vector3f(1, -1, 0);
+        this.vertexBuffer.points = this.mesh.vertices.length / 3;
+        this.elementBuffer.points = this.mesh.indices.length;
 
-        //Quad
-        this.vertexBuffer.appendCoordinate(topLeft);
-        this.vertexBuffer.appendCoordinate(topRight);
-        this.vertexBuffer.appendCoordinate(downLeft);
-        this.vertexBuffer.appendCoordinate(downRight);
+        this.vertexBuffer.size = this.mesh.vertices.length;
+        this.elementBuffer.size = this.mesh.indices.length;
 
-        //Color
-        this.vertexBuffer.appendColor(this.color, 4);
+        this.vertexBuffer.data = this.mesh.vertices;
+        this.elementBuffer.data = this.mesh.indices;
 
-        //Texture coords
-        this.vertexBuffer.appendTextureCoordinate(0, 0);
-        this.vertexBuffer.appendTextureCoordinate(1, 0);
-        this.vertexBuffer.appendTextureCoordinate(0, 1);
-        this.vertexBuffer.appendTextureCoordinate(1, 1);
-
-        this.elementBuffer.appendIndex(0);
-        this.elementBuffer.appendIndex(1);
-        this.elementBuffer.appendIndex(2);
-        this.elementBuffer.appendIndex(1);
-        this.elementBuffer.appendIndex(2);
-        this.elementBuffer.appendIndex(3);
+        this.vertexBuffer.appendColor(this.color, this.vertexBuffer.size);
 
         this.vertexArray.load();
         this.vertexBuffer.load();
@@ -48,8 +35,8 @@ export class Quad extends Shape
         this.elementBuffer.bind();
         this.vertexBuffer.bind();
         this.vertexBuffer.configure(0, 3, 0);
-        this.vertexBuffer.configure(1, 4, 4 * 3 * 4);
-        this.vertexBuffer.configure(2, 2, 4 * 3 * 4 + 4 * 4 * 4);
+        this.vertexBuffer.configure(1, 4, this.vertexBuffer.points * 3 * 4);
+        this.vertexBuffer.configure(2, 2, this.vertexBuffer.points * 3 * 4 + this.vertexBuffer.points * 4 * 4);
     }
 
     onUpdateTexture()
@@ -60,7 +47,7 @@ export class Quad extends Shape
     onUpdateColor()
     {
         var data = [];
-        for(var i = 0; i < 4; i++)
+        for(var i = 0; i < (this.vertexBuffer.points / 3); i++)
         {
             data.push(this.color.getRed());
             data.push(this.color.getGreen());
@@ -69,7 +56,7 @@ export class Quad extends Shape
         }
         this.vertexArray.bind();
         this.vertexBuffer.bind();
-        this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 4 * 3 * 4, new Float32Array(data), 0, 0);
+        this.gl.bufferSubData(this.gl.ARRAY_BUFFER, this.vertexBuffer.points * 3 * 4, new Float32Array(data), 0, 0);
     }
 
     onDraw()
@@ -100,9 +87,8 @@ export class Quad extends Shape
             this.shader.sendMatrix4fData("viewRotationZMatrix", Matrix4f.identity());
         }
 
-
         this.shader.sendBoolData("hasColor", true);
-        this.shader.sendBoolData("hasTexture", true);
+        this.shader.sendBoolData("hasTexture", false);
         this.elementBuffer.draw();
     }
 

@@ -4,6 +4,7 @@ import { Cube } from "./3DEngine/Cube.js";
 import { Level } from "./3DEngine/Level.js";
 import { Texture } from "./3DEngine/Texture.js";
 import { Quad } from "./3DEngine/Quad.js";
+import { Model } from "./3DEngine/Model.js";
 
 class TestLevel extends Level
 {
@@ -20,6 +21,18 @@ class TestLevel extends Level
         this.addTexture(tex);
         this.addTexture(sky);
 
+        var test4 = new Model("test4", "mp7");
+        test4.getScale().setX(0.01);
+        test4.getScale().setY(0.01);
+        test4.getScale().setZ(0.01);
+        test4.getPosition().setX(0.15);
+        test4.getPosition().setY(-0.15);
+        test4.getPosition().setZ(0.35);
+        test4.getRotation().setY(175);
+        test4.setColor(Color.GRAY);
+        test4.setFollowingCamera(true);
+        this.addShape(test4);
+
         var test3 = new Cube("pipi3");
         test3.setTexture(this.getTexture("sky"));
         test3.setColor(Color.WHITE);
@@ -27,8 +40,6 @@ class TestLevel extends Level
         test3.getScale().setY(100);
         test3.getScale().setZ(100);
         this.addShape(test3);
-
-        console.log(test3);
 
         var test = new Cube("pipi");
         test.setTexture(this.getTexture("risitas"));
@@ -93,6 +104,8 @@ class TestLevel extends Level
             if(event.key == "e") camera.getPosition().setY(camera.getPosition().getY() + 0.1);
             if(event.key == "z") camera.getPosition().setZ(camera.getPosition().getZ() + 0.1);
             if(event.key == "s") camera.getPosition().setZ(camera.getPosition().getZ() - 0.1);
+            if(event.key == "d") camera.getPosition().setX(camera.getPosition().getX() + 0.1);
+            if(event.key == "q") camera.getPosition().setX(camera.getPosition().getX() - 0.1);
         };
     }
 
@@ -100,6 +113,7 @@ class TestLevel extends Level
     { 
         var test = this.getShape("pipi");
         var test3 = this.getShape("pipi3");
+        var test4 = this.getShape("test4");
 
         test.getRotation().setY(test.getRotation().getY() + 2.5);
         test3.getRotation().setY(test3.getRotation().getY() + 0.01);

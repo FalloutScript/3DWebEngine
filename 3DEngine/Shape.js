@@ -20,6 +20,7 @@ export class Shape
     shader = null;
     gl = null;
     loaded = false;
+    followingCamera = false;
 
     constructor(name, points, size)
     {
@@ -28,8 +29,6 @@ export class Shape
         if(points <= 0) throw new RangeError("Can't create a shape with null or negative number of points");
         
         this.name = name;
-        this.size = size;
-        this.points = points;
         this.color = new Color(1, 1, 1, 1);
         this.position = new Vector3f(0, 0, 0);
         this.scale = new Vector3f(1, 1, 1);
@@ -74,6 +73,11 @@ export class Shape
         if(this.loaded == false) throw new Error("The shape is already unloaded");
         this.onUnload();
         this.loaded = false;
+    }
+
+    setFollowingCamera(value)
+    {
+        this.followingCamera = value;
     }
 
     setTexture(texture)
@@ -129,6 +133,11 @@ export class Shape
     getRotation()
     {
         return this.rotation;
+    }
+
+    isFollowingCamera()
+    {
+        return this.followingCamera;
     }
 
     isLoaded()

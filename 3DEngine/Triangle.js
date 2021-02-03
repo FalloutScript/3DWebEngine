@@ -61,13 +61,23 @@ export class Triangle extends Shape
         this.shader.sendMatrix4fData("projectionMatrix", Matrix4f.projectionMatrix(renderer.getWidth(), renderer.getHeight(), 60, 0.1, 1000));
         this.shader.sendMatrix4fData("scaleMatrix", Matrix4f.scaleMatrix(this.scale));
         this.shader.sendMatrix4fData("translationMatrix", Matrix4f.translationMatrix(this.position));
-        this.shader.sendMatrix4fData("viewTranslationMatrix", Matrix4f.viewTranslationMatrix(level.getCamera().getPosition()));
-        this.shader.sendMatrix4fData("viewRotationXMatrix", Matrix4f.rotationXMatrix(level.getCamera().getRotation().getX()));
-        this.shader.sendMatrix4fData("viewRotationYMatrix", Matrix4f.rotationYMatrix(level.getCamera().getRotation().getY()));
-        this.shader.sendMatrix4fData("viewRotationZMatrix", Matrix4f.rotationZMatrix(level.getCamera().getRotation().getZ()));
         this.shader.sendMatrix4fData("rotationXMatrix", Matrix4f.rotationXMatrix(this.rotation.getX()));
         this.shader.sendMatrix4fData("rotationYMatrix", Matrix4f.rotationYMatrix(this.rotation.getY()));
         this.shader.sendMatrix4fData("rotationZMatrix", Matrix4f.rotationZMatrix(this.rotation.getZ()));
+        
+        if(this.isFollowingCamera() == false)
+        {
+            this.shader.sendMatrix4fData("viewTranslationMatrix", Matrix4f.viewTranslationMatrix(level.getCamera().getPosition()));
+            this.shader.sendMatrix4fData("viewRotationXMatrix", Matrix4f.rotationXMatrix(level.getCamera().getRotation().getX()));
+            this.shader.sendMatrix4fData("viewRotationYMatrix", Matrix4f.rotationYMatrix(level.getCamera().getRotation().getY()));
+            this.shader.sendMatrix4fData("viewRotationZMatrix", Matrix4f.rotationZMatrix(level.getCamera().getRotation().getZ()));
+        } else {
+            this.shader.sendMatrix4fData("viewTranslationMatrix", Matrix4f.identity());
+            this.shader.sendMatrix4fData("viewRotationXMatrix", Matrix4f.identity());
+            this.shader.sendMatrix4fData("viewRotationYMatrix", Matrix4f.identity());
+            this.shader.sendMatrix4fData("viewRotationZMatrix", Matrix4f.identity());
+        }
+
         this.shader.sendBoolData("hasColor", true);
         this.shader.sendBoolData("hasTexture", false);
         this.vertexBuffer.draw();
