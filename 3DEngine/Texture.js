@@ -8,8 +8,6 @@ export class Texture
     image = null;
     gl = null;
     loaded = false;
-    width = 0;
-    height = 0;
     id = 0;
 
     constructor(name, path)
@@ -18,8 +16,6 @@ export class Texture
         this.path = path;
         this.image = new Image();
         this.image.src = path;
-        this.width = this.image.width;
-        this.height = this.image.height;
         this.gl = Engine.getInstance().getRenderer().getGL();
     }
 
@@ -27,14 +23,18 @@ export class Texture
     {
         if(this.loaded == true) throw new Error("The texture is already loaded");
 
-        this.id = this.gl.createTexture();
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.id);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);	
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.width, this.height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.image);
-        this.loaded = true;
+        var texture = this;
+        this.image.onload = function()
+        {
+            texture.id = texture.gl.createTexture();
+            texture.gl.bindTexture(texture.gl.TEXTURE_2D, texture.id);
+            texture.gl.texParameteri(texture.gl.TEXTURE_2D, texture.gl.TEXTURE_WRAP_S, texture.gl.REPEAT);	
+            texture.gl.texParameteri(texture.gl.TEXTURE_2D, texture.gl.TEXTURE_WRAP_T, texture.gl.REPEAT);
+            texture.gl.texParameteri(texture.gl.TEXTURE_2D, texture.gl.TEXTURE_MIN_FILTER, texture.gl.LINEAR);
+            texture.gl.texParameteri(texture.gl.TEXTURE_2D, texture.gl.TEXTURE_MAG_FILTER, texture.gl.LINEAR);
+            texture.gl.texImage2D(texture.gl.TEXTURE_2D, 0, texture.gl.RGBA, texture.image.width, texture.image.height, 0, texture.gl.RGBA, texture.gl.UNSIGNED_BYTE, texture.image);
+            texture.loaded = true;
+        }
     }
 
     unload()
@@ -46,6 +46,7 @@ export class Texture
 
     bind()
     {
+        if(this.loaded == false) return;
         this.gl.activeTexture(this.gl.TEXTURE0);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.id);
     }

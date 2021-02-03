@@ -24,7 +24,6 @@ export class Level
     load()
     {
         if(this.loaded == true) throw new Error("The level is already loaded");
-
         this.onLoad();
         
         for(var i = 0; i < this.texturesCount; i++)

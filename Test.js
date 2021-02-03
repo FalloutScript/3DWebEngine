@@ -16,18 +16,19 @@ class TestLevel extends Level
     onLoad() 
     {
         var tex = new Texture("risitas", "./risitas.jpg");
-        var skybox = new Texture("skybox", "./sky.jpg");
-        console.log(skybox);
+        var sky = new Texture("sky", "./sky.jpg");
         this.addTexture(tex);
-        this.addTexture(skybox);
+        this.addTexture(sky);
 
         var test3 = new Cube("pipi3");
-        test3.setTexture(this.getTexture("skybox"));
+        test3.setTexture(this.getTexture("sky"));
         test3.setColor(Color.WHITE);
         test3.getScale().setX(100);
         test3.getScale().setY(100);
         test3.getScale().setZ(100);
         this.addShape(test3);
+
+        console.log(test3);
 
         var test = new Cube("pipi");
         test.setTexture(this.getTexture("risitas"));
@@ -98,7 +99,10 @@ class TestLevel extends Level
     onUpdate() 
     { 
         var test = this.getShape("pipi");
+        var test3 = this.getShape("pipi3");
+
         test.getRotation().setY(test.getRotation().getY() + 2.5);
+        test3.getRotation().setY(test3.getRotation().getY() + 0.01);
     }
 
     onDraw() 
@@ -138,6 +142,9 @@ class TestEngine extends Engine
 
 var level = new TestLevel();
 var engine = new TestEngine(level);
-engine.load();
-window.onload = engine.run();
+window.onload = function()
+{
+    engine.load();
+    engine.run();
+}
 
