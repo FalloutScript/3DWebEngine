@@ -98,6 +98,35 @@ export class VertexBuffer
         }
     }
 
+    addDataArray(data)
+    {
+        for(var i = 0; i < data.length; i++)
+        {
+            if(data[i] != null) 
+            {
+                this.data.push(data[i]);
+                this.count++;
+            }
+        }
+    }
+
+    setData(data)
+    {
+        this.data = data;
+        this.count = this.data.length;
+        this.size = this.data.length;
+    }
+
+    setSize(size)
+    {
+        this.size = size;
+    }
+
+    setPoints(points)
+    {
+        this.points = points;
+    }
+
     bind()
     {
         if(this.vbo == 0) throw new Error("The vertex object is not created");
@@ -108,6 +137,26 @@ export class VertexBuffer
     {
         if(this.vbo == 0) throw new Error("The vertex object is not created");
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
+    }
+
+    getSize()
+    {
+        return this.size;
+    }
+
+    getPoints()
+    {
+        return this.points;
+    }
+
+    getCount()
+    {
+        return this.count;
+    }
+
+    getData()
+    {
+        return this.data;
     }
 
     isLoaded()

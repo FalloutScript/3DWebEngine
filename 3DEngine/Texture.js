@@ -5,17 +5,17 @@ export class Texture
 
     name = "";
     path = "";
+    id = 0;
     image = null;
     gl = null;
     loaded = false;
-    id = 0;
 
     constructor(name, path)
     {
-        this.name = name;
-        this.path = path;
         this.image = new Image();
         this.image.src = path;
+        this.name = name;
+        this.path = path;
         this.gl = Engine.getInstance().getRenderer().getGL();
     }
 
@@ -53,6 +53,7 @@ export class Texture
 
     unbind()
     {
+        if(this.loaded == false) return;
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
 
@@ -64,6 +65,16 @@ export class Texture
     getPath()
     {
         return this.path;
+    }
+
+    getImage()
+    {
+        return this.image;
+    }
+
+    isLoaded()
+    {
+        return this.loaded;
     }
 
 };

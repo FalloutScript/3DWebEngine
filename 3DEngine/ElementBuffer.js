@@ -4,15 +4,15 @@ export class ElementBuffer
 {
 
     ebo = 0;
-    points = 0;
+    size = 0;
     count = 0;
     data = [];
     gl = null;
     loaded = false;
 
-    constructor(points)
+    constructor(size)
     {
-        this.points = points;
+        this.size = size;
         this.gl = Engine.getInstance().getRenderer().getGL();
     }
 
@@ -36,27 +36,60 @@ export class ElementBuffer
 
     draw()
     {
-        if(this.points <= 0) throw new RangeError("Can't draw an element buffer with no points");
-        this.gl.drawElements(this.gl.TRIANGLES, this.points, this.gl.UNSIGNED_INT, 0);
+        if(this.size <= 0) throw new RangeError("Can't draw an element buffer with no size");
+        this.gl.drawElements(this.gl.TRIANGLES, this.size, this.gl.UNSIGNED_INT, 0);
     }
 
     appendIndex(value)
     {
-        if(this.count == this.points) throw new RangeError("Can't add more data to the element buffer");
+        if(this.count == this.size) throw new RangeError("Can't add more data to the element buffer");
         this.data.push(value);
         this.count++;
     }
 
+    addDataArray(data)
+    {
+        for(var i = 0; i < data.length; i++)
+        {
+            if(data[i] != null) this.data.push(data[i]);
+        }
+    }
+
+    setData(data)
+    {
+        this.data = data;
+    }
+
+    setSize(size)
+    {
+        this.size = size;
+    }
+
     bind()
     {
-        if(this.vbo == 0) throw new Error("The vertex object is not created");
+        if(this.ebo == 0) throw new Error("The vertex object is not created");
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.ebo);
     }
 
     unbind()
     {
-        if(this.vbo == 0) throw new Error("The vertex object is not created");
+        if(this.ebo == 0) throw new Error("The vertex object is not created");
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
+    }
+
+    getSize()
+    {
+        return this.size;
+    }
+
+    getCount()
+    {
+        return this.count;
+    }
+
+    getData()
+    {
+        return this.data;
     }
 
     isLoaded()

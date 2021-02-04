@@ -14,27 +14,40 @@ export class Shader
         out vec2 textureCoords;
 
         //Projection
-        uniform mat4 projectionMatrix;
+        struct Projection
+        {
+            mat4 projectionMatrix;
+        };
 
         //View
-        uniform mat4 viewTranslationMatrix;
-        uniform mat4 viewRotationXMatrix;
-        uniform mat4 viewRotationYMatrix;
-        uniform mat4 viewRotationZMatrix;
+        struct View
+        {
+            mat4 translationMatrix;
+            mat4 rotationXMatrix;
+            mat4 rotationYMatrix;
+            mat4 rotationZMatrix;
+        };
 
         //Model
-        uniform mat4 translationMatrix;
-        uniform mat4 rotationXMatrix;
-        uniform mat4 rotationYMatrix;
-        uniform mat4 rotationZMatrix;
-        uniform mat4 scaleMatrix;
+        struct Model
+        {
+            mat4 translationMatrix;
+            mat4 rotationXMatrix;
+            mat4 rotationYMatrix;
+            mat4 rotationZMatrix;
+            mat4 scaleMatrix;
+        };
+
+        uniform Model model;
+        uniform View view;
+        uniform Projection projection;
 
         void main()
         {
-            mat4 modelMatrix =  translationMatrix * scaleMatrix * rotationXMatrix * rotationYMatrix * rotationZMatrix;
-            mat4 viewMatrix =   viewRotationXMatrix * viewRotationYMatrix * viewRotationZMatrix *viewTranslationMatrix;
+            mat4 modelMatrix =  model.translationMatrix * model.scaleMatrix * model.rotationXMatrix * model.rotationYMatrix * model.rotationZMatrix;
+            mat4 viewMatrix =   view.rotationXMatrix * view.rotationYMatrix * view.rotationZMatrix * view.translationMatrix;
 
-            gl_Position =  projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1);
+            gl_Position =  projection.projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1);
 
             color = vertexColor;
             textureCoords = vertexTexture;
@@ -52,22 +65,33 @@ export class Shader
         out vec4 fragmentColor;
 
         //Texture
-        uniform sampler2D sampler;
+        struct Shape
+        {
+            sampler2D sampler;
+            int hasColor;
+            int hasTexture;
+        };
 
-        //Components (booleans)
-        uniform int hasColor;
-        uniform int hasTexture;
+        uniform Shape shape;
         
         void main()
         {
-            if(hasColor == 1) fragmentColor = color;
-            if(hasTexture == 1) 
+            if(shape.hasColor == 1)
             {
-                vec4 textureColor = texture(sampler, textureCoords);
-                if(textureColor.a < 0.2) discard;
-                fragmentColor = color * textureColor;
+                fragmentColor = color;
             }
             
+            if(shape.hasTexture == 1) 
+            {
+                vec4 textureColor = texture(shape.sampler, textureCoords);
+                if(textureColor.a >= 0.2) 
+                {
+                    fragmentColor = color * textureColor;
+                } else {
+                    discard;
+                }
+                
+            }
         }
     `;
 

@@ -18,8 +18,7 @@ export class Matrix4f
 
     static identity()
     {
-        var matrix = new Matrix4f();
-        return matrix;
+        return new Matrix4f();
     }
 
     static projectionMatrix(width, height, fov, nearZ, farZ)

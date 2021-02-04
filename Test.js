@@ -23,25 +23,26 @@ class TestLevel extends Level
         this.addTexture(tex);
         this.addTexture(sky);
 
-        var test4 = new Model("test4", "mp7");
-        test4.getScale().setX(0.01);
-        test4.getScale().setY(0.01);
-        test4.getScale().setZ(0.01);
+        var test4 = new Model("test4", "gun");
+        test4.getScale().setX(0.02);
+        test4.getScale().setY(0.02);
+        test4.getScale().setZ(0.02);
         test4.getPosition().setX(0.15);
         test4.getPosition().setY(-0.15);
         test4.getPosition().setZ(0.35);
-        test4.getRotation().setY(175);
+        test4.getRotation().setY(90);
         test4.setColor(Color.GRAY);
         test4.setFollowingCamera(true);
+        test4.setTexture(tex);
         this.addShape(test4);
 
         var test5 = new Quad("test5");
         test5.setTexture(this.getTexture("cursor"));
         test5.setColor(Color.WHITE);
-        test5.getScale().setX(0.03);
-        test5.getScale().setY(0.03);
-        test5.getScale().setZ(0.03);
-        test5.getPosition().setZ(1);
+        test5.getScale().setX(0.002);
+        test5.getScale().setY(0.002);
+        test5.getScale().setZ(0.002);
+        test5.getPosition().setZ(0.1);
         test5.setFollowingCamera(true);
         this.addShape(test5);
 

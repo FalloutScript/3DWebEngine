@@ -56,12 +56,13 @@ export class Level
     unload()
     {
         if(this.loaded == false) throw new Error("The level is already unloaded");
-
         this.onUnload();
+        
         for(var i = 0; i < this.shapesCount; i++)
         {
             if(this.shapes[i] != null) this.shapes[i].unload();
         }
+
         for(var i = 0; i < this.texturesCount; i++)
         {
             if(this.textures[i] != null) this.textures[i].unload();
@@ -119,6 +120,7 @@ export class Level
                 return this.shapes[i];
             } 
         }
+        return null;
     }
 
     getTexture(name)
@@ -130,6 +132,7 @@ export class Level
                 return this.textures[i];
             } 
         }
+        return null;
     }
 
     containsShape(shape)
@@ -165,9 +168,14 @@ export class Level
         return this.textures;
     }
 
-    getCount()
+    getShapesCount()
     {
-        return this.count;
+        return this.shapesCount;
+    }
+
+    getTexturesCount()
+    {
+        return this.texturesCount;
     }
 
     isLoaded()
