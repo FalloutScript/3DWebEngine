@@ -1,5 +1,6 @@
-# Web-Api
-Collection of api that i developped (CSS, JavaScript, WebGL)
+# 3DWebEngine
+
+3D WebGL Game Engine (Javascript)
 
 # Librairies
 
