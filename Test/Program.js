@@ -1,10 +1,10 @@
-import { Engine } from "./3DEngine/Engine.js";
-import { Color } from "./3DEngine/Color.js";
-import { Cube } from "./3DEngine/Cube.js";
-import { Level } from "./3DEngine/Level.js";
-import { Texture } from "./3DEngine/Texture.js";
-import { Quad } from "./3DEngine/Quad.js";
-import { Model } from "./3DEngine/Model.js";
+import { Engine } from "../3DWebEngine/Engine.js";
+import { Color } from "../3DWebEngine/Color.js";
+import { Cube } from "../3DWebEngine/Cube.js";
+import { Level } from "../3DWebEngine/Level.js";
+import { Texture } from "../3DWebEngine/Texture.js";
+import { Quad } from "../3DWebEngine/Quad.js";
+import { Model } from "../3DWebEngine/Model.js";
 
 class TestLevel extends Level
 {
