@@ -3,7 +3,6 @@ import { Color } from "../3DWebEngine/Color.js";
 import { Cube } from "../3DWebEngine/Cube.js";
 import { Level } from "../3DWebEngine/Level.js";
 import { Texture } from "../3DWebEngine/Texture.js";
-import { Quad } from "../3DWebEngine/Quad.js";
 import { Model } from "../3DWebEngine/Model.js";
 
 class TestLevel extends Level
@@ -16,62 +15,35 @@ class TestLevel extends Level
 
     onLoad() 
     {
-        var tex = new Texture("risitas", "./risitas.jpg");
-        var sky = new Texture("sky", "./sky.jpg");
-        var cursor = new Texture("cursor", "./cursor.png");
-        this.addTexture(cursor);
-        this.addTexture(tex);
-        this.addTexture(sky);
 
-        var test4 = new Model("test4", "gun");
-        test4.getScale().setX(0.02);
-        test4.getScale().setY(0.02);
-        test4.getScale().setZ(0.02);
-        test4.getPosition().setX(0.15);
-        test4.getPosition().setY(-0.15);
-        test4.getPosition().setZ(0.35);
-        test4.getRotation().setY(90);
-        test4.setColor(Color.GRAY);
-        test4.setFollowingCamera(true);
-        test4.setTexture(tex);
-        this.addShape(test4);
+        Engine.getInstance().getRenderer().setClearColor(0.6, 0.6, 1);
 
-        var test5 = new Quad("test5");
-        test5.setTexture(this.getTexture("cursor"));
-        test5.setColor(Color.WHITE);
-        test5.getScale().setX(0.002);
-        test5.getScale().setY(0.002);
-        test5.getScale().setZ(0.002);
-        test5.getPosition().setZ(0.1);
-        test5.setFollowingCamera(true);
-        this.addShape(test5);
+        var cubeTexture = new Texture("cubeTexture", "./risitas.jpg");
+        var gunTexture = new Texture("gunTexture", "./Colt_Python.png");
+        this.addTexture(cubeTexture);
+        this.addTexture(gunTexture);
 
-        var test3 = new Cube("pipi3");
-        test3.setTexture(this.getTexture("sky"));
-        test3.setColor(Color.WHITE);
-        test3.getScale().setX(100);
-        test3.getScale().setY(100);
-        test3.getScale().setZ(100);
-        this.addShape(test3);
+        var cube = new Cube("cube");
+        cube.setTexture(cubeTexture);
+        cube.setColor(Color.WHITE);
+        cube.getScale().setX(0.1);
+        cube.getScale().setY(0.1);
+        cube.getScale().setZ(0.1);
+        cube.getPosition().setZ(1);
+        this.addShape(cube);
 
-        var test = new Cube("pipi");
-        test.setTexture(this.getTexture("risitas"));
-        test.setColor(Color.WHITE);
-        test.getScale().setX(0.1);
-        test.getScale().setY(0.1);
-        test.getScale().setZ(0.1);
-        test.getPosition().setZ(2);
-        this.addShape(test);
-
-        var test2 = new Quad("pipi2");
-        test2.setTexture(this.getTexture("risitas"));
-        test2.getRotation().setY(90);
-        test2.getScale().setX(0.1);
-        test2.getScale().setY(0.1);
-        test2.getScale().setZ(0.1);
-        test2.getPosition().setX(1);
-        test2.getPosition().setZ(1);
-        this.addShape(test2);
+        var gun = new Model("gun", "Colt_Python.obj");
+        gun.setTexture(gunTexture);
+        gun.setColor(Color.WHITE);
+        gun.getScale().setX(0.01);
+        gun.getScale().setY(0.01);
+        gun.getScale().setZ(0.01);
+        gun.getPosition().setX(0.15);
+        gun.getPosition().setY(-0.15);
+        gun.getPosition().setZ(0.45);
+        gun.getRotation().setY(180);
+        gun.setFollowingCamera(true);
+        this.addShape(gun);
 
         var engine = Engine.getInstance();
         var camera = this.getCamera();
@@ -110,37 +82,17 @@ class TestLevel extends Level
                 oldY = event.clientY;
             }
         };
-
-        document.onkeypress = function keyEvent(event)
-        {
-            if(event.key == "a") camera.getPosition().setY(camera.getPosition().getY() - 0.1);
-            if(event.key == "e") camera.getPosition().setY(camera.getPosition().getY() + 0.1);
-            if(event.key == "z") camera.getPosition().setZ(camera.getPosition().getZ() + 0.1);
-            if(event.key == "s") camera.getPosition().setZ(camera.getPosition().getZ() - 0.1);
-            if(event.key == "d") camera.getPosition().setX(camera.getPosition().getX() + 0.1);
-            if(event.key == "q") camera.getPosition().setX(camera.getPosition().getX() - 0.1);
-        };
     }
 
     onUpdate() 
     { 
-        var test = this.getShape("pipi");
-        var test3 = this.getShape("pipi3");
-        var test4 = this.getShape("test4");
-
-        test.getRotation().setY(test.getRotation().getY() + 2.5);
-        test3.getRotation().setY(test3.getRotation().getY() + 0.01);
+        var cube = this.getShape("cube");
+        cube.getRotation().setY(cube.getRotation().getY() + 0.2);
     }
 
-    onDraw() 
-    { 
+    onDraw() {}
 
-    }
-
-    onUnload() 
-    { 
-
-    }
+    onUnload() {}
 }
 
 class TestEngine extends Engine
@@ -151,20 +103,9 @@ class TestEngine extends Engine
         super(level);
     }
 
-    onLoad()
-    {
-
-    }
-
-    onUpdate()
-    {
-
-    }
-
-    onUnload()
-    {
-
-    }
+    onLoad() {}
+    onUpdate() {}
+    onUnload() {}
 }
 
 var level = new TestLevel();

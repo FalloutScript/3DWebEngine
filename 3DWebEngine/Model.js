@@ -1,50 +1,67 @@
 import { Shape } from "./Shape.js";
 import { Matrix4f } from "./Matrix4f.js";
 import { Engine } from "./Engine.js";
+import { Texture } from "./Texture.js";
 
 export class Model extends Shape
 {
 
+    url = null;
     mesh = null;
 
-    constructor(name, model)
+    constructor(name, url)
     {
         super(name, 1, 1);
-        this.mesh = new Mesh(document.getElementById(model).textContent);
+        this.url = url;
     }
 
     onLoad()
     {
-        this.vertexBuffer.setPoints(this.mesh.vertices.length / 3);
-        this.elementBuffer.setSize(this.mesh.indices.length);
-        this.vertexBuffer.setSize(this.mesh.vertices.length + this.vertexBuffer.getPoints() * 4 + this.mesh.textures.length);
-        this.vertexBuffer.addDataArray(this.mesh.vertices);
-        this.vertexBuffer.appendColor(this.color, this.vertexBuffer.getPoints());
-        this.vertexBuffer.addDataArray(this.mesh.textures.length);
-        this.elementBuffer.addDataArray(this.mesh.indices);
-
-        console.log(this);
-
-        this.vertexArray.load();
-        this.vertexBuffer.load();
-        this.elementBuffer.load();
+        var model = this;
+        var request = new XMLHttpRequest();
         
-        this.vertexArray.bind();
-        this.elementBuffer.bind();
-        this.vertexBuffer.bind();
-        this.vertexBuffer.configure(0, 3, 0);
-        this.vertexBuffer.configure(1, 4, this.vertexBuffer.points * 3 * 4);
-        this.vertexBuffer.configure(2, 2, this.vertexBuffer.points * 3 * 4 + this.vertexBuffer.points * 4 * 4);
-        this.vertexArray.unbind();
+        request.onreadystatechange = function()
+        {
+            if(request.readyState == XMLHttpRequest.DONE)
+            {
+                model.mesh = new Mesh(request.responseText);
+
+                model.vertexBuffer.setPoints(model.mesh.vertices.length / 3);
+                model.elementBuffer.setSize(model.mesh.indices.length);
+                model.vertexBuffer.setSize(model.mesh.vertices.length + model.vertexBuffer.getPoints() * 4 + model.mesh.textures.length);
+                model.vertexBuffer.addDataArray(model.mesh.vertices);
+                model.vertexBuffer.appendColor(model.color, model.vertexBuffer.getPoints());
+                model.vertexBuffer.addDataArray(model.mesh.textures);
+                model.elementBuffer.addDataArray(model.mesh.indices);
+        
+                model.vertexArray.load();
+                model.vertexBuffer.load();
+                model.elementBuffer.load();
+                
+                model.vertexArray.bind();
+                model.elementBuffer.bind();
+                model.vertexBuffer.bind();
+                model.vertexBuffer.configure(0, 3, 0);
+                model.vertexBuffer.configure(1, 4, model.vertexBuffer.points * 3 * 4);
+                model.vertexBuffer.configure(2, 2, model.vertexBuffer.points * 3 * 4 + model.vertexBuffer.points * 4 * 4);
+                model.vertexArray.unbind();
+            }
+
+        };
+
+        request.open("GET", this.url, true);
+        request.send();
     }
 
     onUpdateTexture()
     {
-
+        if(this.mesh == null) return;
     }
 
     onUpdateColor()
     {
+        if(this.mesh == null) return;
+
         var data = [];
         for(var i = 0; i < (this.vertexBuffer.points / 3); i++)
         {
@@ -60,6 +77,8 @@ export class Model extends Shape
 
     onDraw()
     {
+        if(this.mesh == null) return;
+
         var renderer = Engine.getInstance().getRenderer();
         var level = Engine.getInstance().getLevel();
 
@@ -95,6 +114,7 @@ export class Model extends Shape
 
     onUnload()
     {
+        if(this.mesh == null) return;
         this.elementBuffer.unload();
         this.vertexBuffer.unload();
         this.vertexArray.unload();
