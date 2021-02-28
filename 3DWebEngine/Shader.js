@@ -1,6 +1,6 @@
 export class Shader
 {
-
+    
     static DEFAULT_VERTEX_SHADER = `#version 300 es
         precision mediump float;
 
@@ -44,10 +44,10 @@ export class Shader
 
         void main()
         {
-            mat4 modelMatrix =  model.translationMatrix * model.scaleMatrix * model.rotationXMatrix * model.rotationYMatrix * model.rotationZMatrix;
-            mat4 viewMatrix =   view.rotationXMatrix * view.rotationYMatrix * view.rotationZMatrix * view.translationMatrix;
+            mat4 modelMatrix = model.translationMatrix * model.scaleMatrix * model.rotationXMatrix * model.rotationYMatrix * model.rotationZMatrix;
+            mat4 viewMatrix = view.rotationXMatrix * view.rotationYMatrix * view.rotationZMatrix * view.translationMatrix;
 
-            gl_Position =  projection.projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1);
+            gl_Position = projection.projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1);
 
             color = vertexColor;
             textureCoords = vertexTexture;
@@ -94,6 +94,7 @@ export class Shader
             }
         }
     `;
+
 
     gl = null;
     vertexSource = "";

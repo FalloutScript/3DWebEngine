@@ -33,6 +33,7 @@ export class Texture
             texture.gl.texParameteri(texture.gl.TEXTURE_2D, texture.gl.TEXTURE_MIN_FILTER, texture.gl.LINEAR);
             texture.gl.texParameteri(texture.gl.TEXTURE_2D, texture.gl.TEXTURE_MAG_FILTER, texture.gl.LINEAR);
             texture.gl.texImage2D(texture.gl.TEXTURE_2D, 0, texture.gl.RGBA, texture.image.width, texture.image.height, 0, texture.gl.RGBA, texture.gl.UNSIGNED_BYTE, texture.image);
+            texture.gl.bindTexture(texture.gl.TEXTURE_2D, null);
             texture.loaded = true;
         }
     }

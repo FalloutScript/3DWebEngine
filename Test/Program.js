@@ -1,6 +1,7 @@
 import { Engine } from "../3DWebEngine/Engine.js";
 import { Color } from "../3DWebEngine/Color.js";
 import { Cube } from "../3DWebEngine/Cube.js";
+import { Quad } from "../3DWebEngine/Quad.js";
 import { Level } from "../3DWebEngine/Level.js";
 import { Texture } from "../3DWebEngine/Texture.js";
 import { Model } from "../3DWebEngine/Model.js";
@@ -15,7 +16,7 @@ class TestLevel extends Level
 
     onLoad() 
     {
-
+		this.addTexture(new Texture("crosshair_texture","./crosshair.png"));
         Engine.getInstance().getRenderer().setClearColor(0.6, 0.6, 1);
 
         var cubeTexture = new Texture("cubeTexture", "./risitas.jpg");
@@ -30,6 +31,7 @@ class TestLevel extends Level
         cube.getScale().setY(0.1);
         cube.getScale().setZ(0.1);
         cube.getPosition().setZ(1);
+        cube.setColor(Color.RED);
         this.addShape(cube);
 
         var gun = new Model("gun", "Colt_Python.obj");
@@ -50,6 +52,10 @@ class TestLevel extends Level
         var initializationEvent = false;
         var oldX = 0;
         var oldY = 0;
+		
+		var crosshair = new Quad("crosshair");
+        crosshair.setTexture(this.getTexture("crosshair_texture"));
+        this.addShape(crosshair);
         
         document.onmousemove = function mouseEvent(event)
         {
@@ -62,22 +68,22 @@ class TestLevel extends Level
 
             if(oldX < event.clientX)
             {
-                var x = (event.clientX - oldX) / 10;
+                var x = (event.clientX - oldX);
                 camera.getRotation().setY(camera.getRotation().getY() - x * (100 / engine.getMaxFramesPerSecond()));
                 oldX = event.clientX;
             } else if(oldX > event.clientX) {
-                var x = (oldX - event.clientX) / 10;
+                var x = (oldX - event.clientX);
                 camera.getRotation().setY(camera.getRotation().getY() + x * (100 / engine.getMaxFramesPerSecond()));
                 oldX = event.clientX;
             }
 
             if(oldY < event.clientY)
             {
-                var y = (event.clientY - oldY) / 10;
+                var y = (event.clientY - oldY);
                 camera.getRotation().setX(camera.getRotation().getX() + y * (100 / engine.getMaxFramesPerSecond()));
                 oldY = event.clientY;
             } else if(oldY > event.clientY) {
-                var y = (oldY - event.clientY) / 10;
+                var y = (oldY - event.clientY);
                 camera.getRotation().setX(camera.getRotation().getX() - y * (100 / engine.getMaxFramesPerSecond()));
                 oldY = event.clientY;
             }
@@ -91,7 +97,6 @@ class TestLevel extends Level
     }
 
     onDraw() {}
-
     onUnload() {}
 }
 

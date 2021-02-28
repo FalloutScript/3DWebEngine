@@ -57,7 +57,6 @@ export class Triangle extends Shape
         var level = Engine.getInstance().getLevel();
         
         this.shader.bind();
-        this.vertexArray.bind();
         this.shader.sendMatrix4fData("projection.projectionMatrix", Matrix4f.projectionMatrix(renderer.getWidth(), renderer.getHeight(), 60, 0.1, 1000));
         this.shader.sendMatrix4fData("model.scaleMatrix", Matrix4f.scaleMatrix(this.scale));
         this.shader.sendMatrix4fData("model.translationMatrix", Matrix4f.translationMatrix(this.position));
@@ -78,10 +77,23 @@ export class Triangle extends Shape
             this.shader.sendMatrix4fData("view.rotationZMatrix", Matrix4f.identity());
         }
         
-        this.shader.sendBoolData("shape.hasColor", true);
-        this.shader.sendBoolData("shape.hasTexture", false);
+        if(this.color != null)
+        {
+            this.shader.sendBoolData("shape.hasColor", true);
+        } else {
+            this.shader.sendBoolData("shape.hasColor", false);
+        }
+        
+        if(this.texture != null)
+        {
+            this.shader.sendBoolData("shape.hasTexture", true);
+        } else {
+            this.shader.sendBoolData("shape.hasTexture", false);
+        }
 
+        this.vertexArray.bind();
         this.vertexBuffer.draw();
+        this.vertexArray.unbind();
         if(this.texture != null) this.texture.unbind();
     }
 

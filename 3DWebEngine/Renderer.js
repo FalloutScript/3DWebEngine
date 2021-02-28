@@ -48,8 +48,6 @@ export class Renderer
 
     update()
     {
-        this.canvas.width = document.documentElement.clientWidth;
-        this.canvas.height = document.documentElement.clientHeight;
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.gl.viewport(0, 0, this.width, this.height);

@@ -1,7 +1,6 @@
 import { Shape } from "./Shape.js";
 import { Matrix4f } from "./Matrix4f.js";
 import { Engine } from "./Engine.js";
-import { Texture } from "./Texture.js";
 
 export class Model extends Shape
 {
@@ -26,18 +25,23 @@ export class Model extends Shape
             {
                 model.mesh = new Mesh(request.responseText);
 
+                //Size of buffers
                 model.vertexBuffer.setPoints(model.mesh.vertices.length / 3);
                 model.elementBuffer.setSize(model.mesh.indices.length);
                 model.vertexBuffer.setSize(model.mesh.vertices.length + model.vertexBuffer.getPoints() * 4 + model.mesh.textures.length);
+
+                //Element Buffer
+                model.elementBuffer.addDataArray(model.mesh.indices);
+                
+                //Vertex Buffer
                 model.vertexBuffer.addDataArray(model.mesh.vertices);
                 model.vertexBuffer.appendColor(model.color, model.vertexBuffer.getPoints());
                 model.vertexBuffer.addDataArray(model.mesh.textures);
-                model.elementBuffer.addDataArray(model.mesh.indices);
-        
+
                 model.vertexArray.load();
                 model.vertexBuffer.load();
                 model.elementBuffer.load();
-                
+
                 model.vertexArray.bind();
                 model.elementBuffer.bind();
                 model.vertexBuffer.bind();
@@ -46,7 +50,6 @@ export class Model extends Shape
                 model.vertexBuffer.configure(2, 2, model.vertexBuffer.points * 3 * 4 + model.vertexBuffer.points * 4 * 4);
                 model.vertexArray.unbind();
             }
-
         };
 
         request.open("GET", this.url, true);
@@ -73,6 +76,7 @@ export class Model extends Shape
         this.vertexArray.bind();
         this.vertexBuffer.bind();
         this.gl.bufferSubData(this.gl.ARRAY_BUFFER, this.vertexBuffer.points * 3 * 4, new Float32Array(data), 0, 0);
+        this.vertexArray.unbind();
     }
 
     onDraw()
@@ -81,10 +85,8 @@ export class Model extends Shape
 
         var renderer = Engine.getInstance().getRenderer();
         var level = Engine.getInstance().getLevel();
-
-        if(this.texture != null) this.texture.bind();
+        
         this.shader.bind();
-        this.vertexArray.bind();
         this.shader.sendMatrix4fData("projection.projectionMatrix", Matrix4f.projectionMatrix(renderer.getWidth(), renderer.getHeight(), 60, 0.1, 1000));
         this.shader.sendMatrix4fData("model.scaleMatrix", Matrix4f.scaleMatrix(this.scale));
         this.shader.sendMatrix4fData("model.translationMatrix", Matrix4f.translationMatrix(this.position));
@@ -105,10 +107,24 @@ export class Model extends Shape
             this.shader.sendMatrix4fData("view.rotationZMatrix", Matrix4f.identity());
         }
         
-        this.shader.sendBoolData("shape.hasColor", true);
-        this.shader.sendBoolData("shape.hasTexture", true);
+        if(this.color != null)
+        {
+            this.shader.sendBoolData("shape.hasColor", true);
+        } else {
+            this.shader.sendBoolData("shape.hasColor", false);
+        }
         
+        if(this.texture != null)
+        {
+            this.shader.sendBoolData("shape.hasTexture", true);
+        } else {
+            this.shader.sendBoolData("shape.hasTexture", false);
+        }
+        
+        if(this.texture != null) this.texture.bind();
+        this.vertexArray.bind();
         this.elementBuffer.draw();
+        this.vertexArray.unbind();
         if(this.texture != null) this.texture.unbind();
     }
 

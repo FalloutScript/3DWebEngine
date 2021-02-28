@@ -71,16 +71,15 @@ export class Quad extends Shape
         this.vertexArray.bind();
         this.vertexBuffer.bind();
         this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 4 * 3 * 4, new Float32Array(data), 0, 0);
+        this.vertexArray.unbind();
     }
 
     onDraw()
     {
         var renderer = Engine.getInstance().getRenderer();
         var level = Engine.getInstance().getLevel();
-
-        if(this.texture != null) this.texture.bind();
+        
         this.shader.bind();
-        this.vertexArray.bind();
         this.shader.sendMatrix4fData("projection.projectionMatrix", Matrix4f.projectionMatrix(renderer.getWidth(), renderer.getHeight(), 60, 0.1, 1000));
         this.shader.sendMatrix4fData("model.scaleMatrix", Matrix4f.scaleMatrix(this.scale));
         this.shader.sendMatrix4fData("model.translationMatrix", Matrix4f.translationMatrix(this.position));
@@ -101,10 +100,25 @@ export class Quad extends Shape
             this.shader.sendMatrix4fData("view.rotationZMatrix", Matrix4f.identity());
         }
         
-        this.shader.sendBoolData("shape.hasColor", true);
-        this.shader.sendBoolData("shape.hasTexture", true);
+        if(this.color != null)
+        {
+            this.shader.sendBoolData("shape.hasColor", true);
+        } else {
+            this.shader.sendBoolData("shape.hasColor", false);
+        }
         
+        if(this.texture != null)
+        {
+            this.shader.sendBoolData("shape.hasTexture", true);
+        } else {
+            this.shader.sendBoolData("shape.hasTexture", false);
+        }
+        
+        if(this.texture != null) this.texture.bind();
+        this.vertexArray.bind();
+        this.elementBuffer.bind();
         this.elementBuffer.draw();
+        this.vertexArray.unbind();
         if(this.texture != null) this.texture.unbind();
     }
 

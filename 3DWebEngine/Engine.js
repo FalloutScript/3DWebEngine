@@ -52,7 +52,7 @@ export class Engine
         this.frames = 0;
         this.framesTimer = 0;
         this.framesPerSecond = 0;
-        this.maxFramesPerSecond = 60.0;
+        this.maxFramesPerSecond = 1000.0;
 
         var loop = window.setInterval(function() 
         {
