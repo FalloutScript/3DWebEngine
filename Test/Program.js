@@ -17,7 +17,7 @@ class TestLevel extends Level
     onLoad() 
     {
 		this.addTexture(new Texture("crosshair_texture","./crosshair.png"));
-        Engine.getInstance().getRenderer().setClearColor(0.6, 0.6, 1);
+        Engine.getInstance().getRenderer().setClearColor(Color.BLACK);
 
         var cubeTexture = new Texture("cubeTexture", "./risitas.jpg");
         var gunTexture = new Texture("gunTexture", "./Colt_Python.png");
