@@ -25,17 +25,29 @@ export class Level
     {
         if(this.loaded == true) throw new Error("The level is already loaded");
         this.onLoad();
+		
+		var shapesCount = 0;
+		var texturesCount = 0;
         
         for(var i = 0; i < this.texturesCount; i++)
         {
-            if(this.textures[i] != null) this.textures[i].load();
+            if(this.textures[i] != null) 
+			{
+				this.textures[i].load();
+				texturesCount++;
+			}
         }
         
         for(var i = 0; i < this.shapesCount; i++)
         {
-            if(this.shapes[i] != null) this.shapes[i].load();
+            if(this.shapes[i] != null) 
+			{
+				this.shapes[i].load();
+				shapesCount++;
+			}
         }
-
+		
+		console.log("Shapes loaded : " + shapesCount + " / Textures loaded : " + texturesCount);
         this.loaded = true;
     }
 
@@ -57,17 +69,31 @@ export class Level
     {
         if(this.loaded == false) throw new Error("The level is already unloaded");
         this.onUnload();
+		
+		var shapesCount = 0;
+		var texturesCount = 0;
         
         for(var i = 0; i < this.shapesCount; i++)
         {
-            if(this.shapes[i] != null) this.shapes[i].unload();
+            if(this.shapes[i] != null)
+			{
+				this.shapes[i].unload();
+				shapesCount++;
+			}
         }
 
         for(var i = 0; i < this.texturesCount; i++)
         {
-            if(this.textures[i] != null) this.textures[i].unload();
+            if(this.textures[i] != null) 
+			{
+				this.textures[i].unload();
+				texturesCount++;
+			}
         }
-
+		
+		console.log("Shapes unloaded : " + shapesCount + " / Textures unloaded : " + texturesCount);
+		this.shapes = [];
+		this.textures = [];
         this.loaded = false;
     }
 

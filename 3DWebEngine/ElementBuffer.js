@@ -29,7 +29,9 @@ export class ElementBuffer
 
     unload()
     {
-        if(this.loaded == false) throw new Error("The vertex buffer is already unloaded");
+        if(this.loaded == false) throw new Error("The element buffer is already unloaded");
+	this.count = 0;
+	this.data = [];
         this.gl.deleteBuffer(this.ebo);
         this.loaded = false;
     }

@@ -15,6 +15,9 @@ export class Engine
     framesTimer = 0;
     maxFramesPerSecond = 0;
 
+	/**
+	*
+	*/
     constructor(level)
     {
         if(this.constructor == Engine) throw new Error("Can't instantiate abstract class !");

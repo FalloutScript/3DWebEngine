@@ -40,7 +40,7 @@ export class Texture
 
     unload()
     {
-        if(this.loaded == false) throw new Error("The texture is already unloaded");
+        if(this.loaded == false) return;
         this.gl.deleteTexture(this.id);
         this.loaded = false;
     }

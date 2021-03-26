@@ -48,7 +48,7 @@ export class Shape
 
     load()
     {
-        if(this.loaded == true) throw new Error("The shape is already loaded");
+        if(this.loaded == true) throw new Error("The shape " + this.name + " is already loaded");
         this.onLoad();
         this.loaded = true;
     }

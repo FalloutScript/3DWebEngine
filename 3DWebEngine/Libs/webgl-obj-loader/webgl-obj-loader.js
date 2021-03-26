@@ -1729,7 +1729,7 @@ class Mesh {
         return buffer;
     }
     makeIndexBufferDataForMaterials(...materialIndices) {
-        const indices = new Array().concat(...materialIndices.map(mtlIdx => this.indicesPerMaterial[mtlIdx]));
+        const indices = [].concat(...materialIndices.map(mtlIdx => this.indicesPerMaterial[mtlIdx]));
         const buffer = new Uint16Array(indices);
         buffer.numItems = indices.length;
         return buffer;

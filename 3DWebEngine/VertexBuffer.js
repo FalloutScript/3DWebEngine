@@ -35,6 +35,8 @@ export class VertexBuffer
     unload()
     {
         if(this.loaded == false) throw new Error("The vertex buffer is already unloaded");
+	this.count = 0;
+	this.data = [];
         this.gl.deleteBuffer(this.vbo);
         this.loaded = false;
     }

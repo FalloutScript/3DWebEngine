@@ -96,7 +96,7 @@ export class Cube extends Shape
     onUpdateColor()
     {
         var data = [];
-        for(var i = 0; i < 8; i++)
+        for(var i = 0; i < 36; i++)
         {
             data.push(this.color.getRed());
             data.push(this.color.getGreen());

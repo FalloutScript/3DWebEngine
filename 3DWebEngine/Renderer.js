@@ -1,4 +1,5 @@
 import { Shader } from './Shader.js'
+import { Color } from './Color.js'
 
 export class Renderer
 {
@@ -18,7 +19,7 @@ export class Renderer
         this.canvas = document.getElementById("game_canvas");
         if(this.canvas == null) throw new Error("Can't find the canvas");
 
-        this.gl = this.canvas.getContext("webgl2", {antialias: false, alpha: true, depth: true, desynchronized: false});
+        this.gl = this.canvas.getContext("webgl2", {preserveDrawingBuffer: true, antialias: false, alpha: true, depth: true, desynchronized: false});
         if(this.gl == null) throw new Error("Can't load the WebGL context");
         
         this.defaultShader = new Shader(this.gl, Shader.DEFAULT_VERTEX_SHADER, Shader.DEFAULT_FRAGMENT_SHADER);
@@ -33,7 +34,7 @@ export class Renderer
         if(this.loaded == true) throw new Error("The renderer is already loaded !");
         console.log("{" + this.render + ", " + this.version + ", " + this.glslVersion + ", " + this.vendor + "}");
 
-        this.setClearColor(0, 0, 0);
+        this.setClearColor(Color.BLACK);
         this.setClearDepth(1);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.defaultShader.load();
@@ -50,7 +51,7 @@ export class Renderer
     {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
-        this.gl.viewport(0, 0, this.width, this.height);
+		this.gl.viewport(0, 0, this.width, this.height);
     }
 
     unload()
@@ -61,9 +62,9 @@ export class Renderer
         this.loaded = false;
     }
 
-    setClearColor(r, g, b)
+    setClearColor(color)
     {
-        this.gl.clearColor(r, g, b, 1);
+        this.gl.clearColor(color.getRed(), color.getGreen(), color.getBlue(), 1);
     }
 
     setClearDepth(depth)

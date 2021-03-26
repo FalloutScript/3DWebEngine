@@ -12,6 +12,8 @@ export class Color
     static RED = new Color(1, 0, 0, 1);
     static GREEN = new Color(0, 1, 0, 1);
     static BLUE = new Color(0, 0, 1, 1);
+	static ORANGE = new Color(1, 0.65, 0, 1);
+	static PINK = new Color(1, 0.75, 0.80, 1);
     static YELLOW = new Color(1, 1, 0, 1);
 
     constructor(red, green, blue, alpha)
