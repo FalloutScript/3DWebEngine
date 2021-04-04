@@ -77,7 +77,6 @@ export class Engine
                 engine.framesPerSecond = engine.frames;
                 engine.framesTimer -= 1000.0;
                 engine.frames = 0;
-                console.log("{FPS} " + engine.framesPerSecond);
             }
 
             engine.framesTimer = engine.framesTimer + (1000.0 / engine.maxFramesPerSecond);
