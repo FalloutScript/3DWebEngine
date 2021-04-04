@@ -8,7 +8,12 @@ export class TestGame extends Engine
         super(level);
     }
 
-    onLoad() {}
+    onLoad() 
+    {
+        this.getRenderer().getCanvas().width = window.innerWidth;
+        this.getRenderer().getCanvas().height = window.innerHeight;
+    }
+
     onUpdate() {}
     onUnload() {}
 }

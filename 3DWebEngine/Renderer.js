@@ -19,7 +19,7 @@ export class Renderer
         this.canvas = document.getElementById("game_canvas");
         if(this.canvas == null) throw new Error("Can't find the canvas");
 
-        this.gl = this.canvas.getContext("webgl2", {preserveDrawingBuffer: true, antialias: false, alpha: true, depth: true, desynchronized: false});
+        this.gl = this.canvas.getContext("webgl2", {preserveDrawingBuffer: true, antialias: true, alpha: true, depth: true, desynchronized: false});
         if(this.gl == null) throw new Error("Can't load the WebGL context");
         
         this.defaultShader = new Shader(this.gl, Shader.DEFAULT_VERTEX_SHADER, Shader.DEFAULT_FRAGMENT_SHADER);
@@ -33,12 +33,10 @@ export class Renderer
     {
         if(this.loaded == true) throw new Error("The renderer is already loaded !");
         console.log("{" + this.render + ", " + this.version + ", " + this.glslVersion + ", " + this.vendor + "}");
-
         this.setClearColor(Color.BLACK);
         this.setClearDepth(1);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.defaultShader.load();
-
         this.loaded = true;
     }
 
