@@ -1,15 +1,13 @@
 # 3DWebEngine
 
-Work in progress but you can use it.
+## Description
+3DWebEngine is just a 3D game engine that 
+i developped for a school project using WebGL and JavaScript.
+The "Test" folder contain an example of rendering
+with the engine (it's just a cube and a gun model).
 
-3D WebGL Game Engine (Javascript).
-You can see how it works in the Test folder (Maybe i will do a tutorial section)
+## Librairies
+WebGL-Obj-Loader: https://github.com/frenchtoast747/webgl-obj-loader (MIT License)
 
-# Librairies
-
-WebGL-Obj-Loader: https://github.com/frenchtoast747/webgl-obj-loader
-
-# Example
-
-Github 3DWebEngine: https://matrax.github.io/3DWebEngine/Test/
-Aim-Upgrade: https://aim-upgrade.top/
+## Project
+This 3D game engine was developped for the project of Aim-Upgrade: https://aim-upgrade.top/
