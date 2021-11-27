@@ -5,6 +5,7 @@
 i developped for a school project using WebGL and JavaScript.
 The "Test" folder contain an example of rendering
 with the engine (it's just a cube and a gun model).
+Do what you want with this code :)
 
 ## Librairies
 WebGL-Obj-Loader: https://github.com/frenchtoast747/webgl-obj-loader (MIT License)
